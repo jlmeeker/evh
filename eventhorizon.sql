@@ -33,7 +33,7 @@
 -- Table structure for table `Availability`
 -- 
 
-USE eventhorizon;
+USE ehdev;
 
 CREATE TABLE `Availability` (
   `id` int(11) NOT NULL default '0',

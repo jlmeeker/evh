@@ -1,7 +1,8 @@
 Event Horizon (EVH) is pretty simple to get up and running.  All you need 
-to know is below.  The PHP config file is called inc.php.  Any 
+to know is below.  The PHP config file is called inc.php.local.  Any 
 usernames/passwords/paths you change from below MUST be reflected in 
-inc.php or EVH will fail to run properly.
+this file or EVH will fail to run properly.  Just copy inc.php to
+inc.php.local and make your changes there.
 
 #
 # Prerequisites
@@ -50,7 +51,7 @@ exit;
 
 mysql < eventhorizon.sql
 
-Then, set the appropriate username and password in inc.php!
+Then, set the appropriate username and password in inc.php.local!
 
 
 
@@ -132,7 +133,7 @@ work, the following things need to be done.
 	- chown apache:nobody [evhftp user home dir] (allows for Apache to 
 		move files into upload dir)
 	- chmod 2733 [evhftp user home dir]
-	- set $enableFTP = 1 in inc.php
+	- set $enableFTP = 1 in inc.php.local
 	- cp evhftp-vsftpd.conf /etc/vsftpd/user_conf/[evhftp username] (not necessary, 
 		but it increases security; also edit for accuracy of homedir)
 
@@ -148,15 +149,15 @@ application text here (like page footer).
 
 
 #
-# Go through inc.php and make any final changes
+# Go through inc.php.local and make any final changes
 #
-Go through inc.php and make sure all of the variables are set in accordance 
+Go through inc.php.local and make sure all of the variables are set in accordance 
 with the above steps.  Also, make sure to change the $domains value to 
 actual valid domains.  This variable is the regex which determines if 
 supplied source/destination addresses are acceptible.  Only one address 
 must match this value.
 
 
-WARNING: The find_ftp_file function in inc.php has a $fsize line which may need some tweaking. Apparently, some distros have different orders of the 'ls -l' output.  You'll want to verify that the command it uses actually gets the bytes of the file uploaded, or you'll get some upload errors (mysql insert will fail).
+WARNING: The find_ftp_file function in functions.php has a $fsize line which may need some tweaking. Apparently, some distros have different orders of the 'ls -l' output.  You'll want to verify that the command it uses actually gets the bytes of the file uploaded, or you'll get some upload errors (mysql insert will fail).
 
 WARNING: Make sure the ehcleanup-crondaily.sh script contains the proper path for the ehcleanup.php file.

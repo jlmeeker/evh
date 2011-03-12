@@ -20,6 +20,7 @@ include "../inc.php";
 
 $queryfiles = "select id, sessionid, name, method from Files where 1 order by id;";
 $resfiles = mysql_query($queryfiles,$dbh) or die("<p><b>A fatal database error occured</b>.\n<br />Query: " . $queryfiles . "<br />\nError: (" . mysql_errno() . ") " . mysql_error());
+$numfiles = mysql_num_rows($resfiles);
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -56,11 +57,13 @@ function MM_goToURL() { //v3.0
     <td align="left" valign="middle" nowrap class="header" scope="row">Download</td>
   </tr>
 <? 
+$totalsize=0;
 while ($rowfiles = mysql_fetch_row($resfiles)) { 
 	$querysession = "select Sessions.id, dnldcode, modcode, indate, avail, srcemail, size, Files.id, Sessions.srcemail, Sessions.outdate from Sessions,Files where Sessions.id = $rowfiles[1] and Files.sessionid=Sessions.id;";
 	$ressession = mysql_query($querysession,$dbh) or die("<p><b>A fatal database error occured</b>.\n<br />Query: " . $querysession . "<br />\nError: (" . mysql_errno() . ") " . mysql_error());
 	$rowsession = mysql_fetch_row($ressession);
 	$filesize = round($rowsession[6] / 1024 / 1024, 2);
+	$totalsize += $filesize;
 ?>
   <tr>
     <th align="left" valign="top" nowrap class="content" scope="row" width="100"><?=$rowsession[1]; ?></th>
@@ -79,7 +82,7 @@ while ($rowfiles = mysql_fetch_row($resfiles)) {
 } 
 ?>
 </table>
-<p align="center">&nbsp;</p>
+<div class="content-text" align="center"><strong><?=$numfiles; ?> files (<?=$totalsize; ?>MB) currently in the system!</strong></div>
 <?
 print $footer;
 ?>

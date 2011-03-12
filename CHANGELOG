@@ -1,2 +1,15 @@
 1.1.0
 	- Initial GPL v3 release
+1.1.5
+	- find_ftp_file function changed to use awk instead of cut.  This 
+		should make ftp uploads more reliable
+	- version info is now displayed in page footers
+	- disclaimer can be disabled in the footer now by setting $showdisclaimer = FALSE
+	- footer banner/image not displayed if $banner is NULL or empty (which is the default)
+	- split up inc.php into functions.php and inc.php.  functions.php now holds constants 
+		and functions only.  inc.php only contains default variable values
+	- inc.php now includes inc.php.local.  It is recommended that inc.php be copied to 
+		inc.php.local and all values changed there.  inc.php.local will not be over-
+		written upon release updates (won't be included in the tar/zip packages)
+	- admin page was updated to include the total number of files and disk space used
+	- INSTALL file was updated to reflect the changes above (mainly inc.php.local)
