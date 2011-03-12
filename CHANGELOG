@@ -23,3 +23,13 @@
 	- Modified functions.php to include additional footer text if $discloselogging = TRUE
 	- Modified en.inc language file to include $historyfootertext for showing in the footer
 	- FUTURE: with logging capabilities, we could decrease error log messages some
+1.1.7
+	- Added option to inc.php for setting company name ($companyname).  Now we don't have to
+		worry about overwriting lang/en.inc on subsequent updates
+	- Created new function in functions.php to perform History table inserts (modified pertinent
+		pages to use this new function)
+	- Modified History table: dropped sessid and fileid since they'd be useless anyway, and added
+		filename, srcemail, dstemail
+	- Added a view history page (linked from admin index)
+	- Fixed minor bug in title menu (it had an extra "upload" link which shouldn't be visible unless
+		FTP uploads are disabled)

@@ -33,6 +33,7 @@ $fpath = '/var/www/uploads';
 // get the http path directory name of the script as well as the server name;
 $servername = 'changeme';
 $serverpath = '/var/www/eventhorizon';
+$companyname = 'changeme';
 
 // graphic location;
 $banner = '';

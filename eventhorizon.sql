@@ -97,8 +97,9 @@ CREATE TABLE `History` (
   `srcip` varchar(10) NOT NULL default '',
   `type` varchar(30) NOT NULL default '',
   `browser` varchar(255) NOT NULL default '',
-  `sessionid` int(11) NOT NULL default '0',
-  `fileid` int(11) NOT NULL default '0',
+  `filename` varchar(255) NOT NULL default '',
+  `srcemail` varchar(255) NOT NULL default '',
+  `dstemail` varchar(255) NOT NULL default '';
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM;
 

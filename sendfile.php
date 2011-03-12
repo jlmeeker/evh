@@ -47,9 +47,7 @@ if ($msg1 == '' && $msg2 == '') {
 	if ($savehistory) {
 		$browser = ''; //until we figure out how to get this data;
 		// record file download into History table;
-		$srcip = $_SERVER['REMOTE_ADDR'];
-		$query4="insert into History (moddate, srcip, type, sessionid, fileid, browser) values(\"$mydate\",\"$srcip\",\"download\",$sessionid,$fid,\"$browser\");";
-		$res4 = mysql_query($query4,$dbh) or die('<p><b>A fatal database error occured</b>.\n<br />Query: ' . $query4 . '<br />\nError: (' . mysql_errno() . ') ' . mysql_error());
+		insert_history_entry('download', $browser, $fid, $sessionid);
 	}
 
 }

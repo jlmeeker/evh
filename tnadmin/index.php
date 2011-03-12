@@ -41,6 +41,7 @@ function MM_goToURL() { //v3.0
 <?=$titleandmenu; ?>
 <p align="center">
   <input name="Purge ALL Files" type="submit" id="Purge ALL Files" onClick="MM_goToURL('parent','purge.php');return document.MM_returnValue" value="Purge ALL Files">
+  <input name="View History" type="submit" id="View History" onClick="MM_goToURL('parent','history.php?ba=1');return document.MM_returnValue" value="View History">
 </p>
 <table width="500"  border="0" align="center" cellpadding="3" cellspacing="1" class="border">
   <tr>

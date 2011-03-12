@@ -16,8 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	include "inc.php";
-	if (isset($fname)) $fname = stripslashes($fname);
+include "inc.php";
+if (isset($fname)) $fname = stripslashes($fname);
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -34,10 +34,10 @@ if (isset($del) and $del == 1 and !isset($confirm)) {
 	echo '<!--' . "\r\n";
 	echo 'input_box=confirm("Do you really want to delete this file? \r\nClick OK or Cancel to Continue");' . "\r\n";
 	echo 'if (input_box==true) {' . "\r\n";
-	echo 'window.location = location.href+"&confirm=1&fileid=' . $fileid . '";' . "\r\n";
+	echo 'window.location = location.href+"&confirm=1";' . "\r\n";
 	echo '}' . "\r\n";	
 	echo 'if (input_box==false) {' . "\r\n";
-	echo 'window.location = location.href+"&confirm=0&fileid=' . $fileid . '";' . "\r\n";
+	echo 'window.location = location.href+"&confirm=0";' . "\r\n";
 	echo '}' . "\r\n";		
 	echo '-->' . "\r\n";
 	echo '</script>' . "\r\n";
@@ -49,6 +49,8 @@ elseif (isset($del) and $del == 1 and isset($confirm) and $confirm == 1) {
 		$row = mysql_fetch_row($res);
 		$fileid = $row[0];
 		
+		insert_history_entry('delete', '', $fileid, $sessid); // Log deletion before file/session are deleted;
+		
 		$query = 'delete from Files where sessionid=' . $sessid;
 		$res = mysql_query($query,$dbh) or die('<p><b>File was invalid, could not delete.</b>.\n<br />Query: ' . $query . '<br />\nError: (' . mysql_errno() . ') ' . mysql_error());
 		$query = 'delete from Sessions where id=' . $sessid;
@@ -56,7 +58,7 @@ elseif (isset($del) and $del == 1 and isset($confirm) and $confirm == 1) {
 		remove_files($vercode);
 		$dismsg = 'Session was deleted successfully.';	
 		error_log($vercode . ': Removed via delete URL');	
-		$mod = 'delete';
+		
 }
 elseif (isset($del) and $del == 1 and isset($confirm) and $confirm == 0) $dismsg = 'File deletion was cancelled.';
 else {
@@ -91,16 +93,9 @@ else {
 	
 	mb_send_mail("$DestinationEmail", 'File download at TNI was modified', $mailmsg, $mailheader) or die('Failed to send email.');
 	$dismsg = 'Session was modified successfully.';
-	$mod = 'modify';
+	
+	insert_history_entry('modify', $browser, $fileid, $sessid);
 }
-
-if ($savehistory && $mod != '') {
-	// record file modification/deletion into History table;
-	$srcip = $_SERVER['REMOTE_ADDR'];
-	$query4 = "insert into History (moddate, srcip, type, sessionid, fileid, browser) values(\"$mydate\",\"$srcip\",\"$mod\",$sessid,$fileid,\"$browser\");";
-	$res4 = mysql_query($query4,$dbh) or die('<p><b>A fatal database error occured</b>.\n<br />Query: ' . $query4 . '<br />\nError: (' . mysql_errno() . ') ' . mysql_error());
-}
-
 ?>
 <?=$titleandmenu; ?>
 <p align="center"><span class="content-text"><strong><?=$dismsg; ?></strong></span></p>

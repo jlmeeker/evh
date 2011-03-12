@@ -17,7 +17,7 @@
 */
 
 // Version (please do not edit this);
-$appversion = '1.1.6';
+$appversion = '1.1.7';
 
 include 'lang/en.inc';
 // set php timeout to 7 days (604800 seconds) in the php.ini file;
@@ -67,7 +67,7 @@ $titleandmenu .= '</tr> ';
 $titleandmenu .= '<tr>';
 $titleandmenu .= '<th scope="row"><span class="menu">.:. <a href="http://' . $servername . '/index.php">' . $homelinktext . '</a>' . $sep;
 if ($enableFTP == 1) $titleandmenu .= $uploadlinktext . ' [<a href="http://' . $servername . '/upload.php">HTTP</a> | <a href="http://' . $servername . '/ftp-up.php">FTP</a>]' . $sep;
-$titleandmenu .=  '<a href="http://' . $servername . '/upload.php">' . $uploadlinktext . '</a>' . $sep;
+else $titleandmenu .=  '<a href="http://' . $servername . '/upload.php">' . $uploadlinktext . '</a>' . $sep;
 $titleandmenu .= '<a href="http://' . $servername . '/download.php">' . $downloadlinktext . '</a>' . $sep;
 $titleandmenu .= '<a href="http://' . $servername . '/download.php?mod=1">' . $moddellinktext . '</a>' . $sep;
 $titleandmenu .= '</tr>';
@@ -160,6 +160,26 @@ function find_ftp_file($dirloc) {
 		closedir($handle);
 	}
 	return $finfo;
+}
+
+// Save file action to History table;
+function insert_history_entry($type, $browser, $fid, $sessid) {
+	$srcip = $_SERVER['REMOTE_ADDR'];
+	$query = 'select srcemail, destemail from Sessions where id=' . $sessid;
+	$res = mysql_query($query,$GLOBALS['dbh']);
+	$row = mysql_fetch_row($res);
+	$srcemail = $row[0];
+	$dstemail = $row[1];
+	
+	$query = 'select name from Files where id=' . $fid;
+	$res = mysql_query($query,$GLOBALS['dbh']);
+	$row = mysql_fetch_row($res);
+	$filename = $row[0];
+	
+	$query = 'insert into History (moddate, srcip, type, filename, srcemail, dstemail, browser) values("' . $GLOBALS['mydate'] . '","' . $srcip . '","' . $type . '","' . $filename . '","' . $srcemail . '","' . $dstemail . '","' . $browser . '");';
+	$res = mysql_query($query,$GLOBALS['dbh']);
+	
+	error_log('History saved: ' . $query);
 }
 ?>
 <!-- necessary java scripts -->
