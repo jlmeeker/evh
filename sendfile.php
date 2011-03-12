@@ -24,6 +24,8 @@ $msg2 = '';
 $query = "select id from Sessions where (dnldcode=\"$vercode\" or modcode=\"$vercode\");";
 $res = mysql_query($query,$dbh) or die("<p><b>Error getting session information.</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysql_errno() . ") " . mysql_error());
 if (mysql_num_rows($res) != 1) $msg1 = "The download code is invalid (expired upload?).";
+$row = mysql_fetch_row($res);
+$sessionid = $row[0];
 	
 // Test file presence before sending;
 $query = "select name,method from Files where id=$fid;";
@@ -41,6 +43,15 @@ if ($msg1 == '' && $msg2 == '') {
 	symlink($origin,"$serverpath/$vercode") or error_log($vercode . ": Failed to symlink $origin to $serverpath/$vercode");
 
 	$url = 'http://' . $servername . '/' . $vercode . '/' . $row[0];
+	
+	if ($savehistory) {
+		$browser = ''; //until we figure out how to get this data;
+		// record file download into History table;
+		$srcip = $_SERVER['REMOTE_ADDR'];
+		$query4="insert into History (moddate, srcip, type, sessionid, fileid, browser) values(\"$mydate\",\"$srcip\",\"download\",$sessionid,$fid,\"$browser\");";
+		$res4 = mysql_query($query4,$dbh) or die('<p><b>A fatal database error occured</b>.\n<br />Query: ' . $query4 . '<br />\nError: (' . mysql_errno() . ') ' . mysql_error());
+	}
+
 }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

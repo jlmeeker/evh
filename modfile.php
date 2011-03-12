@@ -45,6 +45,7 @@ while($row = mysql_fetch_row($res)){ ?>
 	<input name="fname" type="hidden" value="<?=$row[8]; ?>">
 	<input name="srcemail" type="hidden" value="<?=$row[4]; ?>">
 	<input name="ba" type="hidden" value="<?=$ba; ?>">
+	<input name="browser" type="hidden" id="browser" value="">
 	<table width="500"  border="0" align="center" cellpadding="3" cellspacing="1" class="border">
 	<tr>
     <th width="150" align="left" valign="top" nowrap class="header" scope="row">Source Email </th>
@@ -85,5 +86,10 @@ while($row = mysql_fetch_row($res)){ ?>
 <?
 print $footer;
 ?>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+document.forms.form1.browser.value = navigator.userAgent;
+//-->
+</script>
 </body>
 </html>

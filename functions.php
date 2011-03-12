@@ -17,7 +17,7 @@
 */
 
 // Version (please do not edit this);
-$appversion = '1.1.5';
+$appversion = '1.1.6';
 
 include 'lang/en.inc';
 // set php timeout to 7 days (604800 seconds) in the php.ini file;
@@ -84,6 +84,7 @@ $footer .= '<th scope="row" class="content-text">Languages: English Japanese<br>
 $footer .= '</tr> -->';
 $footer .= '<tr>';
 $footer .= '<th scope="row" class="content-text">Version ' . $appversion . '<br>' . $footertext;
+if ($discloselogging) $footer .= '<br>' . $historyfootertext;
 if ($banner != '') $footer .= '<br><img src="' . $banner . '">';
 $footer .= '</tr>';
 $footer .= '</table></p>';

@@ -51,6 +51,7 @@ else echo $notesheading;
 <input name="dirname" type="hidden" id="dirname" value="<?=$dirname; ?>">
 <input name="fullfile" type="hidden" id="fullfile" value="<?=$fstat[2]; ?>">
 <input name="filesize" type="hidden" id="filesize" value="<?=$fstat[1]; ?>">
+<input name="browser" type="hidden" id="browser" value="">
 <div align="center" class="content-text">  </div>
 <table width="500"  border="0" align="center" cellpadding="3" cellspacing="1" class="border">
   <tr>
@@ -95,6 +96,10 @@ else echo $notesheading;
 <?
 print $footer;
 ?>
-
+<script language="JavaScript" type="text/JavaScript">
+<!--
+document.forms.form1.browser.value = navigator.userAgent;
+//-->
+</script>
 </body>
 </html>

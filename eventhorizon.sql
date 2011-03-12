@@ -33,7 +33,7 @@
 -- Table structure for table `Availability`
 -- 
 
-USE ehdev;
+USE eventhorizon;
 
 CREATE TABLE `Availability` (
   `id` int(11) NOT NULL default '0',
@@ -86,4 +86,20 @@ CREATE TABLE `Sessions` (
   KEY `dnldcode` (`dnldcode`),
   KEY `modcode` (`modcode`)
 ) TYPE=MyISAM AUTO_INCREMENT=0 ;
+
+-- 
+-- Table structure for table `History`
+-- 
+
+CREATE TABLE `History` (
+  `id` int(11) NOT NULL auto_increment,
+  `moddate` date NOT NULL default '0000-00-00',
+  `srcip` varchar(10) NOT NULL default '',
+  `type` varchar(30) NOT NULL default '',
+  `browser` varchar(255) NOT NULL default '',
+  `sessionid` int(11) NOT NULL default '0',
+  `fileid` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) TYPE=MyISAM;
+
 

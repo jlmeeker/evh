@@ -40,6 +40,10 @@ $banner = '';
 // Whether or not to show footer disclaimer;
 $showdisclaimer = FALSE;
 
+// Do we save a history of uploads and downloads and/or disclose this on page footers?
+$savehistory = TRUE;
+$discloselogging = TRUE;
+
 // FTP storage path (must be setup in the ftp daemon, owned by [apache user]:nobody and perms set to 2733;
 // Also, the system account they use to FTP the files in as must have the default group equal to the apache server's group;
 $ftppath = '/home/ftp/evhftp/';
@@ -50,6 +54,7 @@ $enableFTP = 0;
 // Acceptible email domains (this is a case-insensitive regex);
 $domains = "/yourdomain.com|anotherdomain.com/i";
 
+// REMOVE THESE LINES FROM inc.php.local!!!;
 include 'inc.php.local';  // Get any user-specific config changes;
 include 'functions.php';  // Call in rest of functions;
 ?>

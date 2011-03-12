@@ -13,3 +13,13 @@
 		written upon release updates (won't be included in the tar/zip packages)
 	- admin page was updated to include the total number of files and disk space used
 	- INSTALL file was updated to reflect the changes above (mainly inc.php.local)
+1.1.6
+	- Added option to inc.php for recording transfer (including modification) history ($savehistory)
+		Only logs source IP, fileid, sessionid, and browser info (not for downloads yet)
+	- Added option to inc.php for showing logging disclaimer in footer ($discloselogging)
+	- Modified eventhorizon.sql to reflect new History table
+	- Added update-1.1.6.sql to the fileset.  This is for upgrading from pre-1.1.6 to 1.1.6.
+		It only creates the history table
+	- Modified functions.php to include additional footer text if $discloselogging = TRUE
+	- Modified en.inc language file to include $historyfootertext for showing in the footer
+	- FUTURE: with logging capabilities, we could decrease error log messages some

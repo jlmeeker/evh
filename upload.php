@@ -43,6 +43,7 @@ include "inc.php";
 </table>
 <form action="uploadfiles.php" method="post" enctype="multipart/form-data" name="form1">
 <input name="MAX_FILE_SIZE" type="hidden" id="MAX_FILE_SIZE" value="2097152000">
+<input name="browser" type="hidden" id="browser" value="">
 <p></p>
 <table width="500"  border="0" align="center" cellpadding="3" cellspacing="1" class="border">
   <tr>
@@ -87,6 +88,10 @@ include "inc.php";
 <?
 print $footer;
 ?>
-
+<script language="JavaScript" type="text/JavaScript">
+<!--
+document.forms.form1.browser.value = navigator.userAgent;
+//-->
+</script>
 </body>
 </html>

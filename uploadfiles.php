@@ -87,12 +87,12 @@
 			error_log($dnldpass . ": Successfully uploaded file:" . $filename);
 			
 			// insert data into sql database;
-			$query='insert into Sessions (indate, outdate, avail, srcemail, destemail, dnldcode, modcode) values ("' . $mydate . '", "' . ${'date' . $AvailabilityPeriod} . '", "' . $AvailabilityPeriod . '", "' . $YourEmail . '", "' . $DestinationEmail . '", "' . $dnldpass . '", "' . $modpass . '")';
+			$query = 'insert into Sessions (indate, outdate, avail, srcemail, destemail, dnldcode, modcode) values ("' . $mydate . '", "' . ${'date' . $AvailabilityPeriod} . '", "' . $AvailabilityPeriod . '", "' . $YourEmail . '", "' . $DestinationEmail . '", "' . $dnldpass . '", "' . $modpass . '")';
 			$res = mysql_query($query,$dbh) or die('<p><b>A fatal database error occured</b>.\n<br />Query: ' . $query . '<br />\nError: (' . mysql_errno() . ') ' . mysql_error());
 	
 			// get the session id the sql database just created;
 			$sessid = mysql_insert_id();
-			$query2='insert into Files (name, description, method, sessionid, size) values ("' . $filename. '", "' . utf8_encode(addslashes($File1Description)) . '","' . $method . '", ' . $sessid . ', ' . $filesize . ');';
+			$query2 = 'insert into Files (name, description, method, sessionid, size) values ("' . $filename. '", "' . utf8_encode(addslashes($File1Description)) . '","' . $method . '", ' . $sessid . ', ' . $filesize . ');';
 			$res2 = mysql_query($query2,$dbh) or die('<p><b>A fatal database error occured</b>.\n<br />Query: ' . $query2 . '<br />\nError: (' . mysql_errno() . ') ' . mysql_error());
 	
 			// get the availability period (nice looking one);
@@ -103,6 +103,13 @@
 	
 			// get the file id the sql database just created;
 			$fileid = mysql_insert_id();
+			
+			if ($savehistory) {
+				// record file upload into History table;
+				$srcip = $_SERVER['REMOTE_ADDR'];
+				$query4 = "insert into History (moddate, srcip, type, sessionid, fileid, browser) values(\"$mydate\",\"$srcip\",\"upload\",$sessid,$fileid,\"$browser\");";
+				$res4 = mysql_query($query4,$dbh) or die('<p><b>A fatal database error occured</b>.\n<br />Query: ' . $query4 . '<br />\nError: (' . mysql_errno() . ') ' . mysql_error());
+			}
 
 			$dstheader = $utf8mailhdr . 'From: ' . $YourEmail . "\r\n";
 			$dstheader .= 'Reply-To: ' . $YourEmail;

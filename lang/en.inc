@@ -51,6 +51,7 @@ $sep = ' .:. ';
 // Footer text
 // --------------------------------------
 $footertext = 'This site is for official [insert your domain/company name here] file transfers only.';
+$historyfootertext = 'All file transfers are logged.';
 
 // -------------------------------------------
 // Options below are for the specified pages

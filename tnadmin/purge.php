@@ -61,6 +61,15 @@ elseif (isset($confirm) and $confirm == 1) {
 		$query2 = "delete from Sessions where id=$row[0];";
 		$res2 = mysql_query($query2,$dbh) or die("<p><b>Session was invalid, could not delete.... Purge cancelled.</b>.\n<br />Query: " . $query2 . "<br />\nError: (" . mysql_errno() . ") " . mysql_error());
 		remove_files("$row[1]");
+		
+		if ($savehistory) {
+			// record file modification/deletion into History table;
+			$browser = '';
+			$srcip = $_SERVER['REMOTE_ADDR'];
+			$query4 = "insert into History (moddate, srcip, type, sessionid, browser) values(\"$mydate\",\"$srcip\",\"purge\",$row[0],\"$browser\");";
+			$res4 = mysql_query($query4,$dbh) or die('<p><b>A fatal database error occured</b>.\n<br />Query: ' . $query4 . '<br />\nError: (' . mysql_errno() . ') ' . mysql_error());
+		}
+
 	}
 	echo '<div align=center class="content-text">Purge Completed</div>';
 }
