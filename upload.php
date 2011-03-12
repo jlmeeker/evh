@@ -88,10 +88,5 @@ include "inc.php";
 <?
 print $footer;
 ?>
-<script language="JavaScript" type="text/JavaScript">
-<!--
-document.forms.form1.browser.value = navigator.userAgent;
-//-->
-</script>
 </body>
 </html>

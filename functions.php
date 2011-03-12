@@ -17,7 +17,7 @@
 */
 
 // Version (please do not edit this);
-$appversion = '1.1.7';
+$appversion = '1.1.8';
 
 include 'lang/en.inc';
 // set php timeout to 7 days (604800 seconds) in the php.ini file;
@@ -163,8 +163,10 @@ function find_ftp_file($dirloc) {
 }
 
 // Save file action to History table;
-function insert_history_entry($type, $browser, $fid, $sessid) {
+function insert_history_entry($type, $fid, $sessid) {
 	$srcip = $_SERVER['REMOTE_ADDR'];
+	$browser = $_SERVER['HTTP_USER_AGENT'];
+	
 	$query = 'select srcemail, destemail from Sessions where id=' . $sessid;
 	$res = mysql_query($query,$GLOBALS['dbh']);
 	$row = mysql_fetch_row($res);

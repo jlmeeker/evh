@@ -45,9 +45,8 @@ if ($msg1 == '' && $msg2 == '') {
 	$url = 'http://' . $servername . '/' . $vercode . '/' . $row[0];
 	
 	if ($savehistory) {
-		$browser = ''; //until we figure out how to get this data;
 		// record file download into History table;
-		insert_history_entry('download', $browser, $fid, $sessionid);
+		insert_history_entry('download', $fid, $sessionid);
 	}
 
 }

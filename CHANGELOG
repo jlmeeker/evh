@@ -33,3 +33,12 @@
 	- Added a view history page (linked from admin index)
 	- Fixed minor bug in title menu (it had an extra "upload" link which shouldn't be visible unless
 		FTP uploads are disabled)
+1.1.8
+	- Added logging to cleanup scripts so files deleted upon expiration are logged too
+	- Replaced javascript which queried browser information to use $_SERVER['HTTP_USER_AGENT'] instead (now we can log
+		browser information for ALL transactions)
+	- Replaced history insert code in purge.php with new function (missed this one first time around)
+	- Removed superfluous $domains entry from uploadfiles.php (this was supersceding the value 
+		set in inc.php.local)
+	- Added History filtering/searching as well as column choices
+	- Minor code cleanup

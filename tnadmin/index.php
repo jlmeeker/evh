@@ -47,15 +47,15 @@ function MM_goToURL() { //v3.0
   <tr>
     <th align="left" valign="top" nowrap class="header" scope="row" width="100">Dnld Code</th>
 	<th align="left" valign="top" nowrap class="header" scope="row" width="100">Mod Code</th>
-    <td align="left" valign="middle" nowrap class="header" scope="row">Filename</td>
-    <td align="left" valign="middle" nowrap class="header" scope="row">Size</td>
-    <td align="left" valign="middle" nowrap class="header" scope="row">Uploaded</td>
-    <td align="left" valign="middle" nowrap class="header" scope="row">Expires</td>	
-    <td align="left" valign="middle" nowrap class="header" scope="row">Avail</td>
-    <td align="left" valign="middle" nowrap class="header" scope="row">Uploader</td>
-    <td align="left" valign="middle" nowrap class="header" scope="row">Modify</td>
-    <td align="left" valign="middle" nowrap class="header" scope="row">Delete</td>
-    <td align="left" valign="middle" nowrap class="header" scope="row">Download</td>
+    <th align="left" valign="middle" nowrap class="header" scope="row">Filename</th>
+    <th align="left" valign="middle" nowrap class="header" scope="row">Size</th>
+    <th align="left" valign="middle" nowrap class="header" scope="row">Uploaded</th>
+    <th align="left" valign="middle" nowrap class="header" scope="row">Expires</th>	
+    <th align="left" valign="middle" nowrap class="header" scope="row">Avail</th>
+    <th align="left" valign="middle" nowrap class="header" scope="row">Uploader</th>
+    <th align="left" valign="middle" nowrap class="header" scope="row">Modify</th>
+    <th align="left" valign="middle" nowrap class="header" scope="row">Delete</th>
+    <th align="left" valign="middle" nowrap class="header" scope="row">Download</th>
   </tr>
 <? 
 $totalsize=0;
@@ -67,8 +67,8 @@ while ($rowfiles = mysql_fetch_row($resfiles)) {
 	$totalsize += $filesize;
 ?>
   <tr>
-    <th align="left" valign="top" nowrap class="content" scope="row" width="100"><?=$rowsession[1]; ?></th>
-	<th align="left" valign="top" nowrap class="content" scope="row" width="100"><?=$rowsession[2]; ?></th>
+    <td align="left" valign="top" nowrap class="content" scope="row" width="100"><?=$rowsession[1]; ?></td>
+	<td align="left" valign="top" nowrap class="content" scope="row" width="100"><?=$rowsession[2]; ?></td>
     <td align="left" valign="middle" nowrap class="content" scope="row"><?=$rowfiles[2] . ' (' . $rowfiles[3] . ')'; ?></td>
     <td align="right" valign="middle" nowrap class="content" scope="row"><?=$filesize; ?> MB</td>
     <td align="left" valign="middle" nowrap class="content" scope="row"><?=$rowsession[3]; ?></td>

@@ -24,9 +24,14 @@ $res = mysql_query($query,$dbh) or die("<p><b>A fatal database error occured</b>
 
 while ($row = mysql_fetch_row($res)) {
 		echo "\r\n";
-		$query4 = 'select name from Files where sessionid="' . $row[0] . '"';
+		$query4 = 'select name,id from Files where sessionid="' . $row[0] . '"';
 		$res4 = mysql_query($query4,$dbh) or die('Query: ' . $query4 . '<br />\nError: (' . mysql_errno() . ') ' . mysql_error());
 		$row4 = mysql_fetch_row($res4);
+		
+		if ($savehistory) {
+			// record file deletion into History table;
+			insert_history_entry('expired', $row4[1], $row[0]);
+		}		
 		
 		echo 'Removing data from Files table for dnldcode: ' . $row[1] . "\r\n";
 		$query2 = 'delete from Files where sessionid=' . $row[0];

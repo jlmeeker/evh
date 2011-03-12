@@ -31,7 +31,6 @@
 	$YourEmail = clean_email_string($YourEmail);
 	$DestinationEmail = clean_email_string($DestinationEmail);
 	$email_array = explode(",", $YourEmail . "," . $DestinationEmail);
-	$domains = "/morinda.com|tni.com/i";
 	if (! preg_array($domains,$email_array)) {
 		$dismsg = '<font color=red>ERROR 1006: An error has occurred.  Please contact the Help Desk for assistance.</font>';
 		error_log('File upload filed, email addresses were incorrect.');
@@ -106,7 +105,7 @@
 			
 			if ($savehistory) {
 				// record file upload into History table;
-				insert_history_entry('upload', $browser, $fileid, $sessid);
+				insert_history_entry('upload', $fileid, $sessid);
 			}
 
 			$dstheader = $utf8mailhdr . 'From: ' . $YourEmail . "\r\n";

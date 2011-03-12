@@ -28,7 +28,6 @@ if (isset($fname)) $fname = stripslashes($fname);
 </head>
 <body>
 <?
-$mod = '';
 if (isset($del) and $del == 1 and !isset($confirm)) {
 	echo '<script language="JavaScript">' . "\r\n";
 	echo '<!--' . "\r\n";
@@ -47,9 +46,11 @@ elseif (isset($del) and $del == 1 and isset($confirm) and $confirm == 1) {
 		$query = 'select id from Files where sessionid=' . $sessid;
 		$res = mysql_query($query,$dbh) or die('<p><b>File was invalid, could not delete.</b>.\n<br />Query: ' . $query . '<br />\nError: (' . mysql_errno() . ') ' . mysql_error());
 		$row = mysql_fetch_row($res);
-		$fileid = $row[0];
 		
-		insert_history_entry('delete', '', $fileid, $sessid); // Log deletion before file/session are deleted;
+		if ($savehistory) {
+			// record file deletion into History table;
+			insert_history_entry('delete', $row[0], $sessid); // Log deletion before file/session are deleted;
+		}
 		
 		$query = 'delete from Files where sessionid=' . $sessid;
 		$res = mysql_query($query,$dbh) or die('<p><b>File was invalid, could not delete.</b>.\n<br />Query: ' . $query . '<br />\nError: (' . mysql_errno() . ') ' . mysql_error());
@@ -58,7 +59,6 @@ elseif (isset($del) and $del == 1 and isset($confirm) and $confirm == 1) {
 		remove_files($vercode);
 		$dismsg = 'Session was deleted successfully.';	
 		error_log($vercode . ': Removed via delete URL');	
-		
 }
 elseif (isset($del) and $del == 1 and isset($confirm) and $confirm == 0) $dismsg = 'File deletion was cancelled.';
 else {
@@ -89,12 +89,15 @@ else {
 	$mailmsg .= 'Size: ' . $filesize . ' MB<br>';
 	$mailmsg .= 'Availability Period: ' . $availlong . '<br><br>';
 	$mailmsg .= 'Download URL: <a href="http://' . $servername . '/sendfile.php?fid=' . $fileid . '&vercode=' . $dnldpass . '">http://' . $servername . '/sendfile.php?fid=' . $fileid . '&vercode=' . $dnldpass . '</a><br><br>';
-	$mailmsg .= 'Verification Code: ' . $dnldpass;
+	$mailmsg .= 'Download Code: ' . $dnldpass;
 	
 	mb_send_mail("$DestinationEmail", 'File download at TNI was modified', $mailmsg, $mailheader) or die('Failed to send email.');
 	$dismsg = 'Session was modified successfully.';
-	
-	insert_history_entry('modify', $browser, $fileid, $sessid);
+
+	if ($savehistory) {
+		// record file deletion into History table;
+		insert_history_entry('modify', $fileid, $sessid);
+	}
 }
 ?>
 <?=$titleandmenu; ?>
