@@ -21,6 +21,10 @@ include "inc.php";
 if (isset($vercode) and $vercode != '') $VerificationNumber = $vercode;
 if (isset($modemail) and $modemail != '') $YourEmail = $modemail;
 
+// Protect against XSS vulnerabilities;
+$YourEmail = htmlspecialchars($YourEmail);
+$VerificationNumber = htmlspecialchars($VerificationNumber);
+
 $query='select Sessions.id, Sessions.dnldcode, Sessions.modcode, Sessions.avail, Sessions.srcemail, Sessions.destemail, Files.id, Files.description, Files.name from Sessions,Files where Sessions.srcemail="' . $YourEmail . '" and Sessions.modcode="' . $VerificationNumber . '" and Files.sessionid=Sessions.id';
 $res = mysql_query($query,$dbh) or die("<p><b>A fatal database error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysql_errno() . ") " . mysql_error());
 ?>

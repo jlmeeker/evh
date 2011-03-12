@@ -17,7 +17,7 @@
 */
 
 // Version (please do not edit this);
-$appversion = '1.1.10';
+$appversion = '1.1.11';
 
 include 'lang/en.inc';
 // set php timeout to 7 days (604800 seconds) in the php.ini file;

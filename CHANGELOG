@@ -52,3 +52,5 @@
 	- Changed links to reflect whether or not site is SSL enabled (default to https if possible).
 	- Fixed various and sundry embedded "TNI" and replaced with $companyname
 	- Fixed incomplete download page with invalid download code
+1.1.11
+	- Added fix for XSS vulnerability in modfile.php
