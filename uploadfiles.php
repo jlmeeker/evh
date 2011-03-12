@@ -28,8 +28,8 @@
 <body>
 <?
 	// Verify email addresses contain required domains;
-	$YourEmail = clean_email_string($YourEmail);
-	$DestinationEmail = clean_email_string($DestinationEmail);
+	$YourEmail = addslashes(clean_email_string($YourEmail));
+	$DestinationEmail = addslashes(clean_email_string($DestinationEmail));
 	$email_array = explode(",", $YourEmail . "," . $DestinationEmail);
 	if (! preg_array($domains,$email_array)) {
 		$dismsg = '<font color=red>ERROR 1006: An error has occurred.  Please contact the Help Desk for assistance.</font>';
@@ -37,14 +37,14 @@
 	}
 	else {
 		if (isset($dirname)) {
-			$dnldpass = $dirname;
+			$dnldpass = addslashes($dirname);
 			$filesrc = $fullfile;
 			$filename = utf8_encode(addslashes($File1));
 			$method = 'ftp';
 		}
 		else {
 			// Generate a download code
-			$dnldpass = substr(md5(uniqid(rand(),1)),0,8);
+			$dnldpass = addslashes(substr(md5(uniqid(rand(),1)),0,8));
 			$filesrc = $_FILES['File1']['tmp_name'];
 			$filename = utf8_encode(addslashes(basename($_FILES['File1']['name'])));
 			$filesize = $_FILES['File1']['size'];
@@ -52,12 +52,12 @@
 		}
 		
 		// Test for failed HTTP upload;
-		if (!isset($dirname) && $_FILES['File1']['error'] != 0) error_log($dnldpass . ": Upload error (" . $UPLOADERRORS[$_FILES['File1']['error']] . ")");
+		if (!isset($dirname) && $_FILES['File1']['error'] != 0) error_log(stripslashes($dnldpass) . ": Upload error (" . $UPLOADERRORS[$_FILES['File1']['error']] . ")");
 
 		// If transferred via HTTP or if the file is less than 2GB (2000000000 bytes), move the file;		
 		$ok=0;
 		if ($method == 'http' || $filesize < 1900000000) {
-			$uploadfile = $fpath . '/' . $dnldpass . '/' . $filename;
+			$uploadfile = $fpath . '/' . stripslashes($dnldpass) . '/' . $filename;
 			$tmp = mkdir("$fpath/$dnldpass");
 			
 			error_log($dnldpass . ": Moving $filesrc to $uploadfile");
@@ -65,7 +65,7 @@
 			if ($method == 'http' && move_uploaded_file($filesrc, $uploadfile)) $ok=1;
 			elseif ($method == 'ftp' && rename($filesrc,$uploadfile)) {  // Move file and remove ftp directory;
 				$ok=1;
-				rmdir($ftppath . $dnldpass);
+				rmdir($ftppath . stripslashes($dnldpass));
 			}
 			else {
 				$dismsg = '<font color=red>An error occurred with your file upload.  Please try again.</font>';
@@ -80,10 +80,10 @@
 		}
 		
 		// Generate the modification code;
-		$modpass = substr(md5(uniqid(rand(),1)),0,8);
+		$modpass = addslashes(substr(md5(uniqid(rand(),1)),0,8));
 		
 		if ($ok == 1) {
-			error_log($dnldpass . ": Successfully uploaded file:" . $filename);
+			error_log(stripslashes($dnldpass) . ": Successfully uploaded file:" . $filename);
 			
 			// insert data into sql database;
 			$query = 'insert into Sessions (indate, outdate, avail, srcemail, destemail, dnldcode, modcode) values ("' . $mydate . '", "' . ${'date' . $AvailabilityPeriod} . '", "' . $AvailabilityPeriod . '", "' . $YourEmail . '", "' . $DestinationEmail . '", "' . $dnldpass . '", "' . $modpass . '")';
@@ -108,18 +108,19 @@
 				insert_history_entry('upload', $fileid, $sessid);
 			}
 
-			$dstheader = $utf8mailhdr . 'From: ' . $YourEmail . "\r\n";
-			$dstheader .= 'Reply-To: ' . $YourEmail;
+			$dstheader = $utf8mailhdr . 'From: ' . stripslashes($YourEmail) . "\r\n";
+			$dstheader .= 'Reply-To: ' . stripslashes($YourEmail);
 			$dstmsg  = 'A file has been made available for you to download.<br><br>';
 			$dstmsg .= 'Filename: ' . utf8_encode($filename) . '<br>';
 			$dstmsg .= 'Size: ' . round($filesize / 1024 / 1024, 2) . ' MB<br>';
 			$dstmsg .= 'Availability: ' . $availability . '<br>';
 			$dstmsg .= 'Description: ' . utf8_encode($File1Description) . '<br>';
-			$dstmsg .= 'Download Code: ' . $dnldpass . '<br><br>';
-			$dstmsg .= '<a href="http://' . $servername . '/sendfile.php?fid=' . $fileid . '&vercode=' . $dnldpass . '">Click here to download the file</a><p>';
-			$dstmsg .= 'If the download link above doesn\'t work for you, use the download code above on the <a href="http://' . $servername . '/download.php">' . $appname . ' download page</a>.';
+			$dstmsg .= 'Download Code: ' . stripslashes($dnldpass) . '<br><br>';
 			
-			mail("$DestinationEmail", utf8_encode($filename) . ' ready for download at ' . $companyname, $dstmsg, $dstheader) or die("Could not send receiver email.");
+			$dstmsg .= '<a href="' . $proto . '://' . $servername . '/sendfile.php?fid=' . $fileid . '&vercode=' . stripslashes($dnldpass) . '">Click here to download the file</a><p>';
+			$dstmsg .= 'If the download link above doesn\'t work for you, use the download code above on the <a href="' . $proto . '://' . $servername . '/download.php">' . $appname . ' download page</a>.';
+			
+			mail(stripslashes($DestinationEmail), utf8_encode($filename) . ' ready for download at ' . $companyname, $dstmsg, $dstheader) or die("Could not send receiver email.");
 			
 			$srcheader = $utf8mailhdr . 'From: ' . $ehmailaddr . "\r\n";
 			$srcheader .= 'Reply-To: ' . $ehmailaddr;
@@ -128,17 +129,17 @@
 			$srcmsg .= 'Size: ' . round($filesize / 1024 / 1024, 2) . ' MB<br>';
 			$srcmsg .= 'Availability: ' . $availability . '<br>';
 			$srcmsg .= 'Description: ' . utf8_encode($File1Description) . '<br>';
-			$srcmsg .= 'Download Code: ' . $dnldpass . '<br>';
-			$srcmsg .= 'Modification Code: ' . $modpass . '<br><br>';
-			$srcmsg .= 'Download: <a href="http://' . $servername . '/sendfile.php?fid=' . $fileid . '&vercode=' . $dnldpass . '">Click here to download the file</a><br>';
-			$srcmsg .= 'Delete: <a href="http://' . $servername . '/modapply.php?del=1&sessid=' . $sessid . '&vercode=' . $dnldpass . '">Click here to DELETE the file</a><br>';
+			$srcmsg .= 'Download Code: ' . stripslashes($dnldpass) . '<br>';
+			$srcmsg .= 'Modification Code: ' . stripslashes($modpass) . '<br><br>';
+			$srcmsg .= 'Download: <a href="' . $proto . '://' . $servername . '/sendfile.php?fid=' . $fileid . '&vercode=' . stripslashes($dnldpass) . '">Click here to download the file</a><br>';
+			$srcmsg .= 'Delete: <a href="' . $proto . '://' . $servername . '/modapply.php?del=1&sessid=' . $sessid . '&vercode=' . stripslashes($dnldpass) . '">Click here to DELETE the file</a><br>';
 
-			$srcmsg .= 'To modify the file description, availability period or delete the file, use the modification code above and go to: <a href="http://' . $servername . '/download.php?mod=1">http://' . $servername . '/download.php?mod=1</a>';
-			mail("$YourEmail", utf8_encode($filename) . ' uploaded at ' . $companyname, $srcmsg, $srcheader) or die("Could not send sender email.");
+			$srcmsg .= 'To modify the file description, availability period or delete the file, use the modification code above and go to: <a href="' . $proto . '://' . $servername . '/download.php?mod=1">' . $proto . '://' . $servername . '/download.php?mod=1</a>';
+			mail(stripslashes($YourEmail), utf8_encode($filename) . ' uploaded at ' . $companyname, $srcmsg, $srcheader) or die("Could not send sender email.");
 			$dismsg = 'Your file was uploaded successfully.';
 		} 
 		else {
-			error_log($dnldpass . ": File upload failed for:" . $filename);
+			error_log(stripslashes($dnldpass) . ": File upload failed for:" . $filename);
 		}
 	}
 ?>

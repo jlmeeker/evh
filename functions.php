@@ -17,7 +17,7 @@
 */
 
 // Version (please do not edit this);
-$appversion = '1.1.9';
+$appversion = '1.1.10';
 
 include 'lang/en.inc';
 // set php timeout to 7 days (604800 seconds) in the php.ini file;
@@ -34,7 +34,11 @@ $date3w = date('Y-m-d', mktime(0, 0, 0, date("m")  , date("d")+21, date("Y")));
 // Make Database connection;		
 $dbh = mysql_pconnect($dbhost,$dbuser,$dbpass);
 mysql_select_db($dbname);
-	
+
+// Determine protocol to use;
+if ($enablessl) $proto='https';
+else $proto='http';
+
 // set default mail headers to get  UTF-8 to work;
 // this MUST end in "\r\n" or it will cause problems later;
 $utf8mailhdr = "MIME-Version: 1.0\r\n";
@@ -65,11 +69,11 @@ $titleandmenu .= '<tr>';
 $titleandmenu .= '<th scope="row"><hr align="center" width="65%" size="1" noshade></th>';
 $titleandmenu .= '</tr> ';
 $titleandmenu .= '<tr>';
-$titleandmenu .= '<th scope="row"><span class="menu">.:. <a href="http://' . $servername . '/index.php">' . $homelinktext . '</a>' . $sep;
-if ($enableFTP == 1) $titleandmenu .= $uploadlinktext . ' [<a href="http://' . $servername . '/upload.php">HTTP</a> | <a href="http://' . $servername . '/ftp-up.php">FTP</a>]' . $sep;
-else $titleandmenu .=  '<a href="http://' . $servername . '/upload.php">' . $uploadlinktext . '</a>' . $sep;
-$titleandmenu .= '<a href="http://' . $servername . '/download.php">' . $downloadlinktext . '</a>' . $sep;
-$titleandmenu .= '<a href="http://' . $servername . '/download.php?mod=1">' . $moddellinktext . '</a>' . $sep;
+$titleandmenu .= '<th scope="row"><span class="menu">.:. <a href="' . $proto . '://' . $servername . '/index.php">' . $homelinktext . '</a>' . $sep;
+if ($enableFTP == 1) $titleandmenu .= $uploadlinktext . ' [<a href="' . $proto . '://' . $servername . '/upload.php">HTTP</a> | <a href="' . $proto . '://' . $servername . '/ftp-up.php">FTP</a>]' . $sep;
+else $titleandmenu .=  '<a href="' . $proto . '://' . $servername . '/upload.php">' . $uploadlinktext . '</a>' . $sep;
+$titleandmenu .= '<a href="' . $proto . '://' . $servername . '/download.php">' . $downloadlinktext . '</a>' . $sep;
+$titleandmenu .= '<a href="' . $proto . '://' . $servername . '/download.php?mod=1">' . $moddellinktext . '</a>' . $sep;
 $titleandmenu .= '</tr>';
 $titleandmenu .= '</table>';
 $titleandmenu .= '<p>&nbsp;</p>';

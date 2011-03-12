@@ -16,6 +16,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-cd /var/www/html/eventh
+cd /var/www/eventh
 sudo -u apache /usr/bin/php ehcleanup.php 2>&1 > /dev/null
 

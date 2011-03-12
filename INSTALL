@@ -89,6 +89,7 @@ By default, the php.ini file needs some modifications.  The changes needed
 are below.
 	- enable register_globals
 	- set max upload size, max post size, max memory limits all to 2GB
+		- PHP MAXIMUM IS 2147483647
 	- set tmp_dir to the location above (/var/www/uploads/tmp)
 	- set location of the php error log so you can monitor any 
 		uploads/downloads/errors

@@ -45,3 +45,10 @@
 1.1.9
 	- Slightly modified the recipient emails to have a more user-friendly URL and 
 		instructions for downloading if the URL doesn't work
+1.1.9a
+	- Fixed SQL injection vulnerabilities in multiple files.  This brings the app into PCI compliance
+1.1.10
+	- Added configuration file directive to say whether or not the site is SSL enabled.
+	- Changed links to reflect whether or not site is SSL enabled (default to https if possible).
+	- Fixed various and sundry embedded "TNI" and replaced with $companyname
+	- Fixed incomplete download page with invalid download code

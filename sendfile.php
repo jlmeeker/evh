@@ -21,7 +21,7 @@ $msg1 = '';
 $msg2 = '';
 
 // Test sessid;
-$query = "select id from Sessions where (dnldcode=\"$vercode\" or modcode=\"$vercode\");";
+$query = "select id from Sessions where (dnldcode=\"" . addslashes($vercode) . "\" or modcode=\"" . addslashes($vercode) . "\");";
 $res = mysql_query($query,$dbh) or die("<p><b>Error getting session information.</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysql_errno() . ") " . mysql_error());
 if (mysql_num_rows($res) != 1) $msg1 = "The download code is invalid (expired upload?).";
 $row = mysql_fetch_row($res);
@@ -34,15 +34,16 @@ if (mysql_num_rows($res) != 1) $msg2 = "The requested file does not exist.";
 else $row = mysql_fetch_row($res);
 
 if ($msg1 == '' && $msg2 == '') {
-	$realname = "$fpath/$vercode/$row[0]";
+	$realname = "$fpath/" . stripslashes($vercode) . "/$row[0]";
 	$method = $row[1];
 	
 	// Create symlink;
-	if ($method == 'http') $origin = "$fpath/$vercode";
-	elseif ($method == 'ftp') $origin = "$ftppath/$vercode";
-	symlink($origin,"$serverpath/$vercode") or error_log($vercode . ": Failed to symlink $origin to $serverpath/$vercode");
+	if ($method == 'http') $origin = "$fpath/" . stripslashes($vercode);
+	elseif ($method == 'ftp') $origin = "$ftppath/" . stripslashes($vercode);
 
-	$url = 'http://' . $servername . '/' . $vercode . '/' . $row[0];
+	if (!file_exists("$serverpath/$vercode")) symlink($origin,"$serverpath/" . stripslashes($vercode)) or error_log(stripslashes($vercode) . ": Failed to symlink $origin to $serverpath/$vercode");
+
+	$url = $proto . '://' . $servername . '/' . stripslashes($vercode) . '/' . $row[0];
 	
 	if ($savehistory) {
 		// record file download into History table;
@@ -67,7 +68,7 @@ if ($method == 'http') echo '<META http-equiv="refresh" content="8;URL=' . $url 
 <tr>
 <th class="content-text" scope="row" align="left"><strong>
 <?
-if ($msg1 != '' || $msg2 != '' || !is_link("$serverpath/$vercode")) die("<font color=red>File not found</font>");
+if ($msg1 != '' || $msg2 != '' || !is_link("$serverpath/" . stripslashes($vercode))) die("<font color=red>File not found</font>");
 echo $notesheading; 
 ?>
 </strong></th>
@@ -112,7 +113,7 @@ else { ?>
   </tr>
   <tr>
     <th width="150" align="left" valign="top" nowrap class="header" scope="row"><?=$ftppathfieldtitle; ?></th>
-    <td align="left" valign="middle" nowrap class="content" scope="row"><?="/$vercode/"; ?></td>
+    <td align="left" valign="middle" nowrap class="content" scope="row"><?="/" . stripslashes($vercode) . "/"; ?></td>
   </tr>  
   <tr>  
     <th width="150" align="left" valign="top" nowrap class="header" scope="row"><?=$sendfilenamefeldtitle; ?><br>      </th>

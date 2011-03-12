@@ -75,9 +75,9 @@ while ($rowfiles = mysql_fetch_row($resfiles)) {
     <td align="left" valign="middle" nowrap class="content" scope="row"><?=$rowsession[9]; ?></td>	
     <td align="right" valign="middle" nowrap class="content" scope="row"><?=$rowsession[4]; ?></td>
     <td align="right" valign="middle" nowrap class="content" scope="row"><?=$rowsession[8]; ?></td>
-    <td align="left" valign="middle" nowrap class="content" scope="row"><a href="http://<?=$servername . "/modfile.php?ba=1&sessid=" . $rowsession[0] . "&vercode=" . $rowsession[2] . "&modemail=" . $rowsession[5]; ?>">Modify</a></td>
-    <td align="left" valign="middle" nowrap class="content" scope="row"><a href="http://<?=$servername . "/modapply.php?ba=1&del=1&sessid=" . $rowsession[0] . "&vercode=" . $rowsession[1]; ?>">Delete</a></td>
-    <td align="left" valign="middle" nowrap class="content" scope="row"><a href="http://<?=$servername . "/sendfile.php?fid=$rowsession[7]&vercode=$rowsession[1]"; ?>">Download</a></td>
+    <td align="left" valign="middle" nowrap class="content" scope="row"><a href="https://<?=$servername . "/modfile.php?ba=1&sessid=" . $rowsession[0] . "&vercode=" . $rowsession[2] . "&modemail=" . $rowsession[5]; ?>">Modify</a></td>
+    <td align="left" valign="middle" nowrap class="content" scope="row"><a href="https://<?=$servername . "/modapply.php?ba=1&del=1&sessid=" . $rowsession[0] . "&vercode=" . $rowsession[1]; ?>">Delete</a></td>
+    <td align="left" valign="middle" nowrap class="content" scope="row"><a href="https://<?=$servername . "/sendfile.php?fid=$rowsession[7]&vercode=$rowsession[1]"; ?>">Download</a></td>
   </tr>
 <?
 } 

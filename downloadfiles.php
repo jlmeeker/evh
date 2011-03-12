@@ -17,8 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 	include "inc.php";
-	$query="select Sessions.id, Sessions.dnldcode, Sessions.modcode, Files.id, Files.sessionid, Files.name, Files.description from Sessions,Files where (Sessions.dnldcode=\"$VerificationNumber\" or Sessions.modcode=\"$VerificationNumber\") and (Sessions.destemail like \"%$YourEmail%\" or Sessions.srcemail like \"%$YourEmail%\") and Files.sessionid=Sessions.id;";
+	$query="select Sessions.id, Sessions.dnldcode, Sessions.modcode, Files.id, Files.sessionid, Files.name, Files.description from Sessions,Files where (Sessions.dnldcode=\"" . addslashes($VerificationNumber) . "\" or Sessions.modcode=\"" . addslashes($VerificationNumber) . "\") and (Sessions.destemail like \"%" . addslashes($YourEmail) . "%\" or Sessions.srcemail like \"%" . addslashes($YourEmail) . "%\") and Files.sessionid=Sessions.id;";
 	$res = mysql_query($query,$dbh) or die("<p><b>A fatal database error occured</b>.\n<br />Query: " . $query . "<br />\nError: (" . mysql_errno() . ") " . mysql_error());
+	$numfound = mysql_num_rows($res);
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -30,19 +31,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <body>
 <?=$titleandmenu; ?>
 <?
+if ($numfound != 0) {
 	//echo $query . "<p>";
 	while($row = mysql_fetch_row($res)){
 	
 		//if ($row[7] != "") $realname = $row[7];
 		//else $realname = $row[5];
 		$realname = $row[5];
-		
-		$fsize = filesize("$fpath/$row[1]/$realname");
+		$fsize = filesize("$fpath/" . stripslashes($row[1]) . "/$realname");
 		
 		echo '<table width="500"  border="0" align="center" cellpadding="3" cellspacing="1" class="border">';
 		echo '<tr>';
 		echo '<th width="150" align="left" valign="top" nowrap class="header" scope="row">Filename</th>';
-		echo '<td align="left" valign="middle" nowrap class="content" scope="row"><a href="sendfile.php?fid=' . $row[3] . '&vercode=' . $VerificationNumber . '">' . stripslashes($row[5]) . '</a></td>';
+		echo '<td align="left" valign="middle" nowrap class="content" scope="row"><a href="sendfile.php?fid=' . $row[3] . '&vercode=' . stripslashes($row[1]) . '">' . stripslashes($row[5]) . '</a></td>';
 		echo '</tr>';
 		echo '<tr>';
     	echo '<th width="150" align="left" valign="top" nowrap class="header" scope="row">Description</th>';
@@ -55,6 +56,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		echo '</table>';
 		echo '<p>';	
   	}
+}
+else echo '<div align="center"><font color=red size=-1>File not found</font></div>';
 ?>
 <?
 print $footer;

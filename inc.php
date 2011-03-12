@@ -27,6 +27,9 @@ $dbname = 'eventhorizon';
 $dbuser = 'changeme';
 $dbpass = 'changeme';
 
+// Can we access the site via SSL?
+$enablessl = FALSE;
+
 // Default file path.  This needs to be writable by the user apache runs as;
 $fpath = '/var/www/uploads';
 
