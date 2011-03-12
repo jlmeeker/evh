@@ -1,0 +1,5 @@
+AuthUserFile /etc/htpasswd.evh
+AuthName "Event Horizon Administration"
+AuthType Basic
+
+require user admin

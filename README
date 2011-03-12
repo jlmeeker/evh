@@ -1,0 +1,39 @@
+This file is part of Event Horizon (EVH).
+
+EVH is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+EVH is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Event Horizon, EVH, is the result of a need at Tahitian Noni Interntional for a secure, but temporary file upoad service.  FTP was o.k. until our filesystem kept filling up with useless files.  After brief searches for solutions which provided secure, temporary, user-friendly file transfers, we decided to write our own.
+
+Please keep in mind that this application was not originally intended for public release. It is not up to many coding standards and/or best practices.  Our hope in releasing EVH under the GPL (v3) is that we can give back something to the OSS community from which we've benefitted from for so many years and that together we can take EVH to the next level.  Remember, Tahitian Noni International is not liable for any part of this software.  You use it at your own risk.  
+
+
+The idea behind EVH is that someone can upload a file to the server and have it only accessible to the select few individuals it was intended for. If your first thought was "Why not use an FTP server?", then you are right on track. We used an FTP server for some time, but outgrew it for a few resons. First, handling user accounts got to be a hassle. Second, the files were never deleted, thus turning the FTP server into a type of permament network storage-not the temporary space it was intended to be. Third, as happens occasionally, FTP account passwords get shared and passed around. Then, before we knew it, all sorts of people were using the FTP site for reasons other than its original purpose. Fourth, as all FTP admins will inform you, the FTP server is not designed to be used for confidential information. And, as happens to many FTP servers, this rule is quickly forgotten by the end users and the result is often devastating. We have avoided the latter thus far, but crossing our fingers only goes so far. Thus, Event Horizon was born. It solves all of the previous features our FTP server were lacking. 
+
+Here is how it works....
+
+A user pulls up the main page and clicks on the "Upload new file" link. They are then taken to a screen which asks them a few questions; ones like their email address, the email address(es) of the intended recipients, how long they want the file available for, the file they want to upload, and an optional file description. After filling all of the fields in completely, the file is uploaded to the server. Here is where things get really exciting!
+
+After a successful upload, two emails are sent from the system. The first is to the list of "Destination Emails" containing the following information: file name, file description, URL for downloading the file, and the "Verification Code" . Most users will click on the URL, however, if a user chooses to download from the "Download existing file" link on the web page, then the verification code is required along with an email address for which the file was intended. Without the download URL or a valid email address and code, the file cannot be retrieved-thus keeping it out of the hands of unintended parties. The second email which is sent to the person uploading the file. It contains all of the information of the previous email, plus an additional verification code which allows them to modify the description and availability period or todelete the file alltogether. This should allow them to extend the availability time or remove a file at will.
+
+The file will continue to be available on the server until its availability period is reached. At this time, the file is permamently deleted and the verificaiton code removed from the system along with the list of intended recipients. This maintains security of the file and also plays a huge part in maintaining free disk space.
+
+Why not use SSL if we are so intent on securing our files? Well, the answer is simple. Speed. With the current measures in place, adding the security of SSL is not only overkill, but would significantly slow down file transfers. Plus, the files are only there for so long anyway, so even if someone were to try to get the file at a later date, there is a good chance it will not even be there.
+
+Why not allow multiple file uploads? This decision was done for two reasons. First, it was easier to write allowing for only one file upload. Second, we have had the awesome experience of having to deal with files with all sorts of characters in their title. Forcing people to compress their files first, will decrease the number of files on the system and hopefully facilitate more simple filenames.
+
+
+
+

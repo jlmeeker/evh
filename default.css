@@ -1,0 +1,216 @@
+/*
+ * This file is part of Event Horizon (EVH).
+ *
+ * EVH is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * EVH is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* CSS Document */
+<style type="text/css"> 
+         
+body,td,th  {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+   color: #333333;
+   background-color:#FFFFFF;
+}
+
+input, select, textarea  {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+   color: #333333;
+}
+
+.border {
+   background: #666666;
+}
+
+.no-border {
+   border: none;
+}
+
+.header {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+   background: #00549E;
+   color: #EEEEEE;
+   font-weight: bold;
+}
+
+.menu {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+   color: #EEEEEE;
+   font-weight: bold;
+}
+
+a {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+   color: #00549E;
+   text-decoration: none;
+   font-weight: bold;
+}
+
+.menu {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+   color: #00549E;
+   text-decoration: none;
+   font-weight: bold;
+}
+
+.menu:hover {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+   color: #00549E;
+   text-decoration: underline;
+   font-weight: bold;
+}
+
+a:hover {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+   color: #00549E;   
+   text-decoration: underline;
+   font-weight: bold;
+}
+
+.content {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+	background: #e6e6e6;
+	font-family:Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	color:#333333;
+}
+
+.content-text {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+	font-family:Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	color:#333333;
+}
+
+a.content-text {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+	font-family:Arial, Helvetica, sans-serif;
+	text-decoration: none;
+	color:#333333;
+}
+
+.input_content {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+    background-color:#FFFFFF;
+    color: #333333;
+    border:1px #666666 inset;
+    padding-top: 0.1em;
+    padding-left: 0.1em;
+    padding-right: 0.1em;
+}
+
+.btn_content {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+    background-color:#6699CC;
+    color: #EEEEEE;
+    font-weight: bold;
+    border:1px #666666 outset;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+}
+
+.btn_content:hover {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+    background-color:#EEEEEE;
+    color: #000000;
+    font-weight: bold;
+    border:1px #666666 inset;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+}
+
+.btn_header {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+    background-color: #00549E;
+    color: #EEEEEE;
+    font-weight: bold;
+    border:1px #666666 outset;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+}
+
+.btn_header:hover {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+    background-color:#6699CC;
+    color: #EEEEEE;
+    font-weight: bold;
+    border:1px #666666 inset;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+}
+
+.btn_backedit {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+    background-color: #CC0000;
+    color: #EEEEEE;
+    font-weight: bold;
+    border:1px #666666 outset;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+} 
+
+.btn_backedit:hover {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+    background-color:#6699CC;
+    color: #EEEEEE;
+    font-weight: bold;
+    border:1px #666666 inset;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+}
+
+.error-row {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+   background: #FFCCCC;
+}
+
+.p_title {
+	font-size: x-large;
+	font-weight: bold;
+}
+
+.p_section {font-size: medium}
+
+</style>

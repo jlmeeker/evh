@@ -1,0 +1,162 @@
+Event Horizon (EVH) is pretty simple to get up and running.  All you need 
+to know is below.  The PHP config file is called inc.php.  Any 
+usernames/passwords/paths you change from below MUST be reflected in 
+inc.php or EVH will fail to run properly.
+
+#
+# Prerequisites
+#
+MySQL
+PHP 5 (maybe 4, but not tested; make sure you get apache module too)
+Apache
+vsftpd (or another ftp service running on apache server)
+
+
+
+#
+# Create the HTTP upload directory.  
+#
+It is highly recommend that this location be outside the DocumentRoot for 
+any and all Apache Virtual Hosts. This is mainly for security reasons, and 
+it keeps prying scripts from downloading files without permission.  The 'tmp' 
+directory is where we'll configure PHP to put the file uploads before 
+they're processed.  The 'uploads' directory will be the main repository of 
+the uploaded files.  
+
+The default locations are below.  Be sure to change the upload directory 
+to wherever you want it to be.  Also, the apache user and group may be 
+different depending on your distribution. 
+
+These commands can be run as either the Apache user or root.
+
+mkdir -p /var/www/uploads/tmp
+chown -R apache.apache /var/www/uploads
+chmod -R 2770 /var/www/uploads
+
+
+
+#
+# Create DB Schema
+#
+Currently, EVH only supports MySQL.  Not for any particular reason, but just 
+because that is what we had at hand.  The .sql file is a schema export of 
+the MySQL structure. This will have to be done as root.
+
+[ from within mysql shell ]
+create database eventhorizon;
+grant all priviliges on eventhorizon.* to [evhdbuser]@localhost identified by '[password]';
+flush priviliges;
+exit;
+
+mysql < eventhorizon.sql
+
+Then, set the appropriate username and password in inc.php!
+
+
+
+#
+# Setup Cron
+#
+The deletion of files upon expiration is done via a Cron script which runs 
+daily.  The SQL database currently only holds the date a file was uploaded, 
+and not the time, so an hourly cron job just doesn't make sense. This will 
+have to be done as root (I guess these could be under the Apache user's 
+cron eventually).
+
+cp ehcleanup-crondaily.sh /etc/cron.daily/ehcleanup.sh
+chown root.root /etc/cron.daily/ehcleanup.sh
+chmod 700 /etc/cron.daily/ehcleanup.sh
+
+
+
+#
+# Set Admin password 
+#
+The administration interface can be found at: http://[server]/[path]/tnadmin.  
+The command below will create a new htpasswd file (and overwrite an 
+existing one) and set the admin password.  This command will need to be 
+run as root.
+
+htpasswd -b -c /etc/htpasswd.evh admin
+
+
+
+#
+# Make PHP changes
+#
+By default, the php.ini file needs some modifications.  The changes needed 
+are below.
+	- enable register_globals
+	- set max upload size, max post size, max memory limits all to 2GB
+	- set tmp_dir to the location above (/var/www/uploads/tmp)
+	- set location of the php error log so you can monitor any 
+		uploads/downloads/errors
+
+
+
+#
+# Configure Apache
+#
+Depending on how you want it setup, edit the Apache configs appropriately.  By 
+default it expects to be a VirtualHost.
+
+To facilitate downloads of the files, make sure that the following option 
+is set either globally or in the VirtualHost definition.  If this isn't set, 
+some browsers may show the contents of the file instead of forcing a 
+download like it should.
+
+DefaultType application/octet-stream
+
+Also, depending on how you configure Apache, place all files from the EVH 
+tar bundle into the path of Apache (such as in the DocumentRoot or a 
+sub-directory thereof).  Make sure apache owns the location of the EVH php 
+files (so it can create/remove symlinks for file downloads).
+
+chown apache:apache [EVH file location]
+
+
+
+#
+# Configure FTP access (if desired)
+#
+As far as I can tell, all browsers have about a 2GB restriction on submitted 
+form data.  This limits us to 2GB uploads when using HTTP.  To allow for 
+larger uploads, EVH supports files uploaded via FTP.  In order for this to 
+work, the following things need to be done.
+	- Install some sort of FTP service (vsftpd is a good example)
+	- setup a new system account called evhftp
+	- edit /etc/passwd and set the default shell for the evhftp user to 
+		something like /sbin/nologin (make sure the shell you 
+		specify is in /etc/shells)
+	- set the default group for evhftp to Apache's
+	- chown apache:nobody [evhftp user home dir] (allows for Apache to 
+		move files into upload dir)
+	- chmod 2733 [evhftp user home dir]
+	- set $enableFTP = 1 in inc.php
+	- cp evhftp-vsftpd.conf /etc/vsftpd/user_conf/[evhftp username] (not necessary, 
+		but it increases security; also edit for accuracy of homedir)
+
+
+
+#
+# Localise application text
+#
+All text within the application is contained in the lang/ folder.  The idea 
+was to have a file for each language supported and then just specified 
+somehow.  Currently, there is only English (lang/en.inc).  Customize any 
+application text here (like page footer).
+
+
+#
+# Go through inc.php and make any final changes
+#
+Go through inc.php and make sure all of the variables are set in accordance 
+with the above steps.  Also, make sure to change the $domains value to 
+actual valid domains.  This variable is the regex which determines if 
+supplied source/destination addresses are acceptible.  Only one address 
+must match this value.
+
+
+WARNING: The find_ftp_file function in inc.php has a $fsize line which may need some tweaking. Apparently, some distros have different orders of the 'ls -l' output.  You'll want to verify that the command it uses actually gets the bytes of the file uploaded, or you'll get some upload errors (mysql insert will fail).
+
+WARNING: Make sure the ehcleanup-crondaily.sh script contains the proper path for the ehcleanup.php file.
