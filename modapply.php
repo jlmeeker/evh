@@ -87,11 +87,12 @@ else {
 	$mailmsg = 'The following file has been modified.<br><br>';
 	$mailmsg .= 'Filename: ' . $fname . '<br>Description: ' . $File1Description . '<br>';
 	$mailmsg .= 'Size: ' . $filesize . ' MB<br>';
-	$mailmsg .= 'Availability Period: ' . $availlong . '<br><br>';
-	$mailmsg .= 'Download URL: <a href="http://' . $servername . '/sendfile.php?fid=' . $fileid . '&vercode=' . $dnldpass . '">http://' . $servername . '/sendfile.php?fid=' . $fileid . '&vercode=' . $dnldpass . '</a><br><br>';
-	$mailmsg .= 'Download Code: ' . $dnldpass;
+	$mailmsg .= 'Availability Period: ' . $availlong . '<br>';
+	$mailmsg .= 'Download Code: ' . $dnldpass . '<br><br>';
+	$mailmsg .= 'Download: <a href="http://' . $servername . '/sendfile.php?fid=' . $fileid . '&vercode=' . $dnldpass . '">Click here to download the file</a><p>';
+	$mailmsg .= 'If the download link above doesn\'t work for you, use the download code above on the <a href="http://' . $servername . '/download.php">' . $appname . ' download page</a>.';	
 	
-	mb_send_mail("$DestinationEmail", 'File download at TNI was modified', $mailmsg, $mailheader) or die('Failed to send email.');
+	mb_send_mail("$DestinationEmail", 'File download at ' . $companyname . ' was modified', $mailmsg, $mailheader) or die('Failed to send email.');
 	$dismsg = 'Session was modified successfully.';
 
 	if ($savehistory) {

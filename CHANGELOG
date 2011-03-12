@@ -39,6 +39,9 @@
 		browser information for ALL transactions)
 	- Replaced history insert code in purge.php with new function (missed this one first time around)
 	- Removed superfluous $domains entry from uploadfiles.php (this was supersceding the value 
-		set in inc.php.local)
+		set in inc.php.local
 	- Added History filtering/searching as well as column choices
 	- Minor code cleanup
+1.1.9
+	- Slightly modified the recipient emails to have a more user-friendly URL and 
+		instructions for downloading if the URL doesn't work

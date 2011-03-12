@@ -99,7 +99,7 @@ CREATE TABLE `History` (
   `browser` varchar(255) NOT NULL default '',
   `filename` varchar(255) NOT NULL default '',
   `srcemail` varchar(255) NOT NULL default '',
-  `dstemail` varchar(255) NOT NULL default '';
+  `dstemail` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`id`)
 ) TYPE=MyISAM;
 

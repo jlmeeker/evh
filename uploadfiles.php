@@ -69,7 +69,7 @@
 			}
 			else {
 				$dismsg = '<font color=red>An error occurred with your file upload.  Please try again.</font>';
-				if ($method == 'htt') $dismsg .= '<p>Upload error: (' . $UPLOADERRORS[$_FILES['File1']['error']] . ')';
+				if ($method == 'http') $dismsg .= '<p>Upload error: (' . $UPLOADERRORS[$_FILES['File1']['error']] . ')';
 				$ok = 0;
 			}
 			$method = 'http';  // Force this to HTTP before database insert so the download URL is correct;
@@ -115,9 +115,11 @@
 			$dstmsg .= 'Size: ' . round($filesize / 1024 / 1024, 2) . ' MB<br>';
 			$dstmsg .= 'Availability: ' . $availability . '<br>';
 			$dstmsg .= 'Description: ' . utf8_encode($File1Description) . '<br>';
-			$dstmsg .= 'Download URL: <a href="http://' . $servername . '/sendfile.php?fid=' . $fileid . '&vercode=' . $dnldpass . '">http://' . $servername . '/sendfile.php?fid=' . $fileid . '&vercode=' . $dnldpass . '</a><br>';
-			$dstmsg .= 'Download Code: ' . $dnldpass;
-			mail("$DestinationEmail", utf8_encode($filename) . ' ready for download at TNI', $dstmsg, $dstheader) or die("Could not send receiver email.");
+			$dstmsg .= 'Download Code: ' . $dnldpass . '<br><br>';
+			$dstmsg .= '<a href="http://' . $servername . '/sendfile.php?fid=' . $fileid . '&vercode=' . $dnldpass . '">Click here to download the file</a><p>';
+			$dstmsg .= 'If the download link above doesn\'t work for you, use the download code above on the <a href="http://' . $servername . '/download.php">' . $appname . ' download page</a>.';
+			
+			mail("$DestinationEmail", utf8_encode($filename) . ' ready for download at ' . $companyname, $dstmsg, $dstheader) or die("Could not send receiver email.");
 			
 			$srcheader = $utf8mailhdr . 'From: ' . $ehmailaddr . "\r\n";
 			$srcheader .= 'Reply-To: ' . $ehmailaddr;
@@ -126,12 +128,13 @@
 			$srcmsg .= 'Size: ' . round($filesize / 1024 / 1024, 2) . ' MB<br>';
 			$srcmsg .= 'Availability: ' . $availability . '<br>';
 			$srcmsg .= 'Description: ' . utf8_encode($File1Description) . '<br>';
-			$srcmsg .= 'Download URL: <a href="http://' . $servername . '/sendfile.php?fid=' . $fileid . '&vercode=' . $dnldpass . '">http://' . $servername . '/sendfile.php?fid=' . $fileid . '&vercode=' . $dnldpass . '</a><br>';
-			$srcmsg .= 'Delete URL: <a href="http://' . $servername . '/modapply.php?del=1&sessid=' . $sessid . '&vercode=' . $dnldpass . '">http://' . $servername . '/modapply.php?del=1&sessid=' . $sessid . '&vercode=' . $dnldpass . '</a><br>';
 			$srcmsg .= 'Download Code: ' . $dnldpass . '<br>';
 			$srcmsg .= 'Modification Code: ' . $modpass . '<br><br>';
+			$srcmsg .= 'Download: <a href="http://' . $servername . '/sendfile.php?fid=' . $fileid . '&vercode=' . $dnldpass . '">Click here to download the file</a><br>';
+			$srcmsg .= 'Delete: <a href="http://' . $servername . '/modapply.php?del=1&sessid=' . $sessid . '&vercode=' . $dnldpass . '">Click here to DELETE the file</a><br>';
+
 			$srcmsg .= 'To modify the file description, availability period or delete the file, use the modification code above and go to: <a href="http://' . $servername . '/download.php?mod=1">http://' . $servername . '/download.php?mod=1</a>';
-			mail("$YourEmail", utf8_encode($filename) . ' uploaded at TNI', $srcmsg, $srcheader) or die("Could not send sender email.");
+			mail("$YourEmail", utf8_encode($filename) . ' uploaded at ' . $companyname, $srcmsg, $srcheader) or die("Could not send sender email.");
 			$dismsg = 'Your file was uploaded successfully.';
 		} 
 		else {
